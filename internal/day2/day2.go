@@ -36,20 +36,32 @@ func newGame(id int) *Game {
   return &g
 }
 
-func parseGame(line string) *GameSet {
+func parseGame(line string) *Game{
  var id int = ParseId(line)
+  // Split string by ";" delimeter, and parse sub strings with parseGameSet
+  
 
+  return newGame(id)
 }
 
 func ParseId(line string) int {
   re := regexp.MustCompile(`Game\s(\d+):`) 
 
-  match, err := strconv.Atoi(re.FindStringSubmatch(line)[0])
+  matches := re.FindAllStringSubmatch(line, -1)
+  for _, m := range matches {
+   if len(matches) > 0 {
+      gameIDStr := m[1]
 
-  if err != nil { panic(err) }
+      GameID, err := strconv.Atoi(gameIDStr)
 
-  return match
+      if err != nil { panic(err)}
+    
+      return GameID
+    } 
+  }
+  
 
+  return -1
 }
 
 func IsPossibleGame(game Game,

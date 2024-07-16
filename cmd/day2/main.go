@@ -40,7 +40,7 @@ func main() {
     err := scanner.Err()
     utils.CheckError(err)
 
-    // Combine line's border digits and add them to the total sum
+    // Check if the game is valid, if so add it to the totalSum
     res, err := utils.CombineBorderDigits(line)
     utils.CheckError(err)
 

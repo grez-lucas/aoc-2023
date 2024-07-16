@@ -19,6 +19,16 @@ func TestParseId(t *testing.T) {
         input: "Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue",
         expected: 2,
         },
+      {
+        name:  "Game 3 has Id 3",
+        input: "Game 3: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue",
+        expected: 3,
+        },
+      {
+        name:  "Game 22 has Id 22",
+        input: "Game 22: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue",
+        expected: 22,
+        },
       }
 
   	for _, tt := range tests {
@@ -27,7 +37,7 @@ func TestParseId(t *testing.T) {
       result := day2.ParseId(tt.input)
 
       // Log matches for debugging
-      t.Logf("Matches found: %v", result)
+      t.Logf("Found id: %d", result)
 
       // Assert
       if result != tt.expected {
@@ -36,7 +46,6 @@ func TestParseId(t *testing.T) {
 	}
 
 
-
-}
+})
   } 
 }

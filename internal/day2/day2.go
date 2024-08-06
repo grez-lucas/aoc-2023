@@ -43,12 +43,25 @@ func newGame(id int) *Game {
   return &g
 }
 
-func parseGame(line string) *Game{
- var id int = ParseId(line)
+func ParseGame(line string) (*Game, error ){
+  var id int = ParseId(line)
+  game := newGame(id)
   // Split string by ";" delimeter, and parse sub strings with parseGameSet
-  
 
-  return newGame(id)
+  gameSets := ParseGameSets(line)
+
+  for _, gameSetString := range(gameSets) {
+
+    gs, err := ParseGameSet(gameSetString)
+
+    if err != nil {
+      return nil, fmt.Errorf("Error parsing game with id %d, %v", id, err)
+    }
+
+    game.gameSets = append(game.gameSets, *gs)
+  }
+
+  return game, nil
 }
 
 func ParseId(line string) int {
@@ -71,10 +84,10 @@ func ParseId(line string) int {
   return -1
 }
 
-func ParseGameSets(line string) *[]string {
+func ParseGameSets(line string) []string {
 
-  result := make([]string, 1)
-  gameset_re := regexp.MustCompile(`(\d[\w\s\d,]+)[\n;$]`)
+  result := []string{}
+  gameset_re := regexp.MustCompile(`\d[\w\s\d,]+(?:[;\n]|$)`)
 
   matches := gameset_re.FindAllStringSubmatch(line, -1)
 
@@ -83,11 +96,11 @@ func ParseGameSets(line string) *[]string {
 
     if len(matches) > 0 {
 
-      result = append(result, match[1])
+      result = append(result, match[0])
     }
     
   }
-  return &result
+  return result
 }
 
 func ParseGameSet(gamesetString string) (*GameSet, error) {

@@ -1,10 +1,9 @@
-package day2_test
+package day2
 
 import (
 	"slices"
 	"testing"
 
-	"github.com/grez-lucas/aoc-2023/internal/day2"
 )
 
 
@@ -36,7 +35,7 @@ func TestParseId(t *testing.T) {
   	for _, tt := range tests {
     t.Run(tt.name, func(t *testing.T) {
       // Act
-      result := day2.ParseId(tt.input)
+      result := ParseId(tt.input)
 
       // Log matches for debugging
       t.Logf("Found id: %d", result)
@@ -58,24 +57,24 @@ func TestParseGameSet(t *testing.T) {
   var tests = []struct {
     name string
     input string
-    expected day2.GameSet
+    expected GameSet
   } {
 {
         name:  "parses standard gameSet",
         input: "3 green, 4 blue, 1 red;",
-        expected: day2.GameSet{ Red: 1, Green: 3, Blue: 4},
+        expected: GameSet{ Red: 1, Green: 3, Blue: 4},
         },
       {
         name:  "parses GameSet with missing values",
         input: "1 blue, 2 green",
-        expected: day2.GameSet{ Red: 0, Green: 2, Blue: 1},
+        expected: GameSet{ Red: 0, Green: 2, Blue: 1},
         },
       }
 
   	for _, tt := range tests {
     t.Run(tt.name, func(t *testing.T) {
       // Act
-      result, err := day2.ParseGameSet(tt.input)
+      result, err := ParseGameSet(tt.input)
 
       // Log matches for debugging
       // t.Logf("Found id: %d", result)
@@ -104,28 +103,85 @@ func TestParseGameSets(t *testing.T) {
     expected []string
   } {
       {
-        name:  "parses standard GameSets",
-        input: "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green",
-        expected: []string{"3 blue, 4 red;", "1 red, 2 green, 6 blue;", "2 green"},
+        name:  "parses single GameSet",
+        input: "Game 1: 3 blue, 4 red",
+        expected: []string{"3 blue, 4 red"},
       },
       {
-        name:  "parses multi-line GameSets",
-        input: "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green\nGame 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue",
-        expected: []string{"3 blue, 4 red;", "1 red, 2 green, 6 blue;", "2 green", "1 blue, 2 green;", "3 green, 4 blue, 1 red;", "1 green, 1 blue"},
+        name:  "parses multiple GameSets",
+        input: "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green",
+        expected: []string{"3 blue, 4 red;", "1 red, 2 green, 6 blue;", "2 green"},
       },
     }
 
   	for _, tt := range tests {
     t.Run(tt.name, func(t *testing.T) {
       // Act
-      result := day2.ParseGameSets(tt.input)
+      result := ParseGameSets(tt.input)
 
       // Log matches for debugging
       // t.Logf("Found id: %d", result)
 
       // Assert
 
-      if slices.Equal(*result, tt.expected){
+      if !slices.Equal(result, tt.expected) {
+        t.Errorf("Test %s: Got result %v, expected %v", tt.name, result, tt.expected)
+        return
+	}
+
+
+})
+  } 
+}
+
+func TestParseGame(t *testing.T) {
+
+  // Arrange
+  var tests = []struct {
+    name string
+    input string
+    expected Game
+  } {
+      {
+        name:  "parses multiple GameSet standard Game",
+        input: "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green",
+        expected: Game{ 
+          id: 1,
+          gameSets: []GameSet{ 
+            {Red: 4, Green: 0, Blue: 3}, 
+            {Red: 1, Green: 2, Blue: 6}, 
+            {Red: 0, Green: 2, Blue: 0}, 
+          }, 
+        },
+      },
+      {
+        name:  "parses single GameSet GameSets",
+        input: "Game 2: 1 blue, 2 green",
+        expected: Game{ id: 2, gameSets: []GameSet{
+          {Red: 0, Green: 2, Blue: 1},
+        },
+        },
+      },
+    }
+
+  	for _, tt := range tests {
+    t.Run(tt.name, func(t *testing.T) {
+      // Act
+      result, err := ParseGame(tt.input)
+
+      // Log matches for debugging
+      // t.Logf("Found id: %d", result)
+      if err != nil {
+
+        t.Errorf("Test %s: Got unexpected error %v", tt.name, err)
+      }
+
+      // Assert
+      if result.id != tt.expected.id {
+        t.Errorf("Test %s: Got id %d, expected %d", tt.name, result.id, tt.expected.id)
+      }
+
+      if !slices.Equal(result.gameSets, tt.expected.gameSets) {
         t.Errorf("Test %s: Got result %v, expected %v", tt.name, result, tt.expected)
         return
 	}

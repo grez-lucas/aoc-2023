@@ -152,7 +152,7 @@ func IsPossibleGame(game Game,
   sumBlue := 0
 
   for _, gameSet := range game.gameSets{ 
-    sumRed += gameSet.Green
+    sumRed += gameSet.Red
     sumGreen += gameSet.Green
     sumBlue += gameSet.Blue
   } 

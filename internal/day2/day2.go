@@ -1,6 +1,7 @@
 package day2
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 )
@@ -16,12 +17,18 @@ type Game struct {
   gameSets []GameSet
 } 
 
+var (
+    redPattern   = regexp.MustCompile(`(\d+)\sred`)
+    greenPattern = regexp.MustCompile(`(\d+)\sgreen`)
+    bluePattern  = regexp.MustCompile(`(\d+)\sblue`)
+)
+
 func newGameSet(colors ...int) *GameSet {
   red, green, blue := 0, 0, 0 // default values
 
   if len(colors) > 0 { red  = colors[0] }
-  if len(colors) > 1 { green  = colors[0] }
-  if len(colors) > 2 { blue  = colors[0] }
+  if len(colors) > 1 { green  = colors[1] }
+  if len(colors) > 2 { blue  = colors[2] }
 
   g := GameSet{Red: red, Green: green, Blue: blue}
   return &g
@@ -63,6 +70,64 @@ func ParseId(line string) int {
 
   return -1
 }
+
+func parseGameSets(line string) *[]string {
+
+  result := make([]string, 1)
+  gameset_re := regexp.MustCompile(`(\d[\w\s\d,]+)[\n;\z]`)
+
+  matches := gameset_re.FindAllStringSubmatch(line, -1)
+
+
+  for _, match := range matches {
+
+    if len(matches) > 0 {
+
+      result = append(result, match[1])
+    }
+    
+  }
+  return &result
+}
+
+func ParseGameSet(gamesetString string) (*GameSet, error) {
+
+
+  parseColor := func(pattern *regexp.Regexp, name string) (int, error) {
+    matches := pattern.FindStringSubmatch(gamesetString)
+
+    if len(matches) < 2 {
+      return 0, nil
+    }
+    value, err := strconv.Atoi(matches[1])
+    if err != nil {
+      return 0, fmt.Errorf("Invalid %s value %v", name, err)
+    }
+    return value, nil
+  }
+
+  red, err := parseColor(redPattern, "red")
+  if err != nil {
+    return nil, err
+  }
+
+  green, err := parseColor(greenPattern, "green")
+  if err != nil {
+    return nil, err
+  }
+
+  blue, err := parseColor(bluePattern, "blue")
+  if err != nil {
+    return nil, err
+  }
+
+  // Parse the line and identify gameSet
+  gs := newGameSet(red, green, blue)
+
+  return gs, nil
+
+}
+
 
 func IsPossibleGame(game Game,
   redCubes int,

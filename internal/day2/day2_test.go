@@ -190,3 +190,65 @@ func TestParseGame(t *testing.T) {
 })
   } 
 }
+
+func TestIsPossibleGame(t *testing.T) {
+
+  // Arrange
+  var tests = []struct {
+    name string
+    input Game
+    expected bool
+  } {
+      {
+        name:  "possible game is possible",
+        input: Game{
+          id: 1,
+          gameSets: []GameSet{ 
+            {Red: 4, Green: 0, Blue: 3}, 
+            {Red: 1, Green: 2, Blue: 6}, 
+            {Red: 0, Green: 2, Blue: 0}, 
+          }, 
+        },
+        expected: true,
+      },
+      {
+        name:  "impossible game is not possible",
+        input: Game{
+          id: 1,
+          gameSets: []GameSet{ 
+            {Red: 4, Green: 0, Blue: 3}, 
+            {Red: 1, Green: 2, Blue: 6}, 
+            {Red: 1, Green: 2, Blue: 0}, 
+          }, 
+        },
+        expected: false,
+      },
+      {
+        name:  "possible game with less than enough cubes is possible",
+        input: Game{
+          id: 1,
+          gameSets: []GameSet{ 
+            {Red: 0, Green: 0, Blue: 0}, 
+            {Red: 1, Green: 0, Blue: 6}, 
+            {Red: 0, Green: 2, Blue: 0}, 
+          }, 
+        },
+        expected: true,
+      },
+    }
+
+  for _, tt := range tests {
+    t.Run(tt.name, func(t *testing.T) {
+      // Act
+      result := IsPossibleGame(tt.input, 5, 4, 9)
+
+      // Assert
+
+      if result != tt.expected{
+        t.Errorf("Test %s: Got result %v, expected %v", tt.name, result, tt.expected)
+        return
+      }
+
+    })
+  } 
+}

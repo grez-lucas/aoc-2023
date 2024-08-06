@@ -43,6 +43,10 @@ func newGame(id int) *Game {
   return &g
 }
 
+func GetId(game Game) int {
+  return game.id
+}
+
 func ParseGame(line string) (*Game, error ){
   var id int = ParseId(line)
   game := newGame(id)
@@ -147,16 +151,19 @@ func IsPossibleGame(game Game,
   greenCubes int,
   blueCubes int) bool {
   
-  sumRed := 0
-  sumGreen := 0
-  sumBlue := 0
-
   for _, gameSet := range game.gameSets{ 
+    sumRed := 0
+    sumGreen := 0
+    sumBlue := 0
+
     sumRed += gameSet.Red
     sumGreen += gameSet.Green
     sumBlue += gameSet.Blue
+
+    if !( redCubes >= sumRed && greenCubes >= sumGreen && blueCubes >= sumBlue) {
+      return false
+    }
   } 
   
-  return ( redCubes >= sumRed && greenCubes >= sumGreen && blueCubes >= sumBlue)
-
+  return true
 }

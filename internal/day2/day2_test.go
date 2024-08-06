@@ -216,7 +216,7 @@ func TestIsPossibleGame(t *testing.T) {
         input: Game{
           id: 1,
           gameSets: []GameSet{ 
-            {Red: 4, Green: 0, Blue: 3}, 
+            {Red: 4, Green: 1600, Blue: 3}, 
             {Red: 1, Green: 2, Blue: 6}, 
             {Red: 1, Green: 2, Blue: 0}, 
           }, 

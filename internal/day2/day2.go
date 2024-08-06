@@ -71,10 +71,10 @@ func ParseId(line string) int {
   return -1
 }
 
-func parseGameSets(line string) *[]string {
+func ParseGameSets(line string) *[]string {
 
   result := make([]string, 1)
-  gameset_re := regexp.MustCompile(`(\d[\w\s\d,]+)[\n;\z]`)
+  gameset_re := regexp.MustCompile(`(\d[\w\s\d,]+)[\n;$]`)
 
   matches := gameset_re.FindAllStringSubmatch(line, -1)
 

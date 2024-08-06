@@ -1,8 +1,10 @@
 package day2_test
 
 import (
-  "testing"
-  "github.com/grez-lucas/aoc-2023/internal/day2"
+	"slices"
+	"testing"
+
+	"github.com/grez-lucas/aoc-2023/internal/day2"
 )
 
 
@@ -85,6 +87,46 @@ func TestParseGameSet(t *testing.T) {
 
       if *result != tt.expected {
         t.Errorf("Test %s: Got result %d, expected %d", tt.name, result, tt.expected)
+        return
+	}
+
+
+})
+  } 
+}
+
+func TestParseGameSets(t *testing.T) {
+
+  // Arrange
+  var tests = []struct {
+    name string
+    input string
+    expected []string
+  } {
+      {
+        name:  "parses standard GameSets",
+        input: "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green",
+        expected: []string{"3 blue, 4 red;", "1 red, 2 green, 6 blue;", "2 green"},
+      },
+      {
+        name:  "parses multi-line GameSets",
+        input: "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green\nGame 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue",
+        expected: []string{"3 blue, 4 red;", "1 red, 2 green, 6 blue;", "2 green", "1 blue, 2 green;", "3 green, 4 blue, 1 red;", "1 green, 1 blue"},
+      },
+    }
+
+  	for _, tt := range tests {
+    t.Run(tt.name, func(t *testing.T) {
+      // Act
+      result := day2.ParseGameSets(tt.input)
+
+      // Log matches for debugging
+      // t.Logf("Found id: %d", result)
+
+      // Assert
+
+      if slices.Equal(*result, tt.expected){
+        t.Errorf("Test %s: Got result %v, expected %v", tt.name, result, tt.expected)
         return
 	}
 

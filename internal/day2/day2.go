@@ -167,3 +167,28 @@ func IsPossibleGame(game Game,
   
   return true
 }
+
+func getMinGameCubes(game Game) GameSet {
+  minRedCubes := 0
+  minBlueCubes := 0
+  minGreenCubes := 0
+
+  for _, gameSet := range game.gameSets{
+
+    if (gameSet.Red > minRedCubes) {minRedCubes = gameSet.Red }
+
+    if (gameSet.Blue > minBlueCubes) { minBlueCubes = gameSet.Blue }
+
+    if (gameSet.Green > minGreenCubes) {minGreenCubes = gameSet.Green }
+
+
+  }
+
+  gs := newGameSet(minRedCubes, minGreenCubes, minBlueCubes)
+
+  return *gs
+}
+
+func GetGameSetPower(gameSet GameSet) int {
+  return gameSet.Red * gameSet.Green * gameSet.Blue
+}

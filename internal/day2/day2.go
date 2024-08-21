@@ -168,7 +168,7 @@ func IsPossibleGame(game Game,
   return true
 }
 
-func getMinGameCubes(game Game) GameSet {
+func GetMinGameCubes(game Game) GameSet {
   minRedCubes := 0
   minBlueCubes := 0
   minGreenCubes := 0

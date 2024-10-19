@@ -31,3 +31,10 @@ func isSymbol(character byte) bool {
 	return slices.Contains(symbols, character)
 
 }
+
+func isNumber(character byte) bool {
+	var numbersString string = "1234567890"
+	var numbers []byte = []byte(numbersString)
+
+	return slices.Contains(numbers, character)
+}

@@ -10,7 +10,7 @@ type Position struct {
 	c int
 }
 
-func sumTotalPartNumbers(
+func SumTotalPartNumbers(
 	numbersMap map[Position]byte,
 	symbolsMap map[Position]byte,
 ) (int, error) {

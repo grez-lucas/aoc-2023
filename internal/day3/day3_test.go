@@ -228,7 +228,7 @@ func Test_isPartNumber(t *testing.T) {
 	}
 }
 
-func Test_sumTotalPartNumbers(t *testing.T) {
+func TestSumTotalPartNumbers(t *testing.T) {
 	// Arrange
 	var tests = []struct {
 		name            string
@@ -276,7 +276,7 @@ func Test_sumTotalPartNumbers(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 
 			// Act
-			result, err := sumTotalPartNumbers(tt.inputNumbersMap, tt.inputSymbolsMap)
+			result, err := SumTotalPartNumbers(tt.inputNumbersMap, tt.inputSymbolsMap)
 
 			// Assert
 			if err != nil {

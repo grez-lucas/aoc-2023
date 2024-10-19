@@ -1,20 +1,37 @@
 package day3
 
-import "slices"
+import (
+	"slices"
+)
 
 type position struct {
 	r int
 	c int
 }
 
-func ParseTablet() {
-	// Gets a Tablet string, returns a Map
+func parseTabletLine(row int, line string) (map[position]byte, map[position]byte) {
+	// Gets a Tablet string, returns a NumbersMap and a SymbolsMap
 
 	// Map coordinates to the char
-	// Coordinates could be their own struct
 	// Char could be '1234567890.'
 
-	// m := make(map[position]string)
+	numbersMap := make(map[position]byte, 140)
+	symbolsMap := make(map[position]byte, 140)
+
+	for col, character := range line {
+		byteCharacter := byte(character)
+
+		if isSymbol(byteCharacter) {
+			symbolsMap[position{row, col}] = byteCharacter
+		}
+
+		if isNumber(byteCharacter) {
+			numbersMap[position{row, col}] = byteCharacter
+		}
+
+	}
+
+	return numbersMap, symbolsMap
 
 }
 

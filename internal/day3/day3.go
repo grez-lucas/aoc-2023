@@ -2,11 +2,37 @@ package day3
 
 import (
 	"slices"
+	"strconv"
 )
 
 type position struct {
 	r int
 	c int
+}
+
+func sumTotalPartNumbers(
+	numbersMap map[position]byte,
+	symbolsMap map[position]byte,
+) (int, error) {
+
+	sum := 0
+
+	for pos, val := range numbersMap {
+		if isPartNumber(pos, symbolsMap) {
+			str := string(val)
+			intVal, err := strconv.Atoi(str)
+
+			if err != nil {
+				return sum, err
+			}
+
+			sum = sum + intVal
+
+		}
+	}
+
+	return sum, nil
+
 }
 
 func parseTabletLine(row int, line string) (map[position]byte, map[position]byte) {

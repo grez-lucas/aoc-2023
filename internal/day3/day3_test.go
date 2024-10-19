@@ -135,7 +135,6 @@ func TestParseTabletLine(t *testing.T) {
 
 func Test_isPartNumber(t *testing.T) {
 	// Arrange
-	// TODO: Write cases for horizontals, verticals both diagonals and no match
 	var tests = []struct {
 		name            string
 		inputPosition   position
@@ -227,4 +226,67 @@ func Test_isPartNumber(t *testing.T) {
 			}
 		})
 	}
+}
+
+func Test_sumTotalPartNumbers(t *testing.T) {
+	// Arrange
+	var tests = []struct {
+		name            string
+		inputNumbersMap map[position]byte
+		inputSymbolsMap map[position]byte
+		expected        int
+	}{
+
+		{name: "Normal case",
+			inputNumbersMap: map[position]byte{
+				{8, 2}: byte('9'),
+			},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: 9,
+		},
+		{name: "Multiple adjacent numbers",
+			inputNumbersMap: map[position]byte{
+				{8, 2}: byte('9'),
+				{8, 4}: byte('9'),
+				{7, 2}: byte('9'),
+				{7, 4}: byte('9'),
+			},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: 36,
+		},
+		{name: "No adjacent numbers",
+			inputNumbersMap: map[position]byte{
+				{8, 2}: byte('9'),
+				{8, 4}: byte('9'),
+				{7, 2}: byte('9'),
+				{7, 4}: byte('9'),
+			},
+			inputSymbolsMap: map[position]byte{
+				{2, 3}: byte('*'),
+			},
+			expected: 0,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+
+			// Act
+			result, err := sumTotalPartNumbers(tt.inputNumbersMap, tt.inputSymbolsMap)
+
+			// Assert
+			if err != nil {
+				t.Errorf("Got error, `%v`", err)
+			}
+
+			if result != tt.expected {
+				t.Errorf("Inocrrect result, expected `%v`, got `%v`", tt.expected, result)
+			}
+		})
+	}
+
 }

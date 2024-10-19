@@ -25,15 +25,22 @@ func main() {
 	for scanner.Scan() {
 		line := scanner.Text()
 		parseNumbersMap, parseSymbolsMap := day3.ParseTabletLine(fPos, line)
-		fmt.Println(line)
 
-		maps.Copy(parseNumbersMap, numbersMap)
-		maps.Copy(parseSymbolsMap, symbolsMap)
+		maps.Copy(numbersMap, parseNumbersMap)
+		maps.Copy(symbolsMap, parseSymbolsMap)
 
 		fPos++
 	}
 
 	fmt.Println("numbersMap: ", numbersMap)
 	fmt.Println("symbolsMap", symbolsMap)
+
+	res, err := day3.SumTotalPartNumbers(numbersMap, symbolsMap)
+
+	if err != nil {
+		panic(fmt.Errorf("Error getting SumTotalPartNumbers result: `%v` ", err))
+	}
+
+	fmt.Println("Total part number sum: ", res)
 
 }

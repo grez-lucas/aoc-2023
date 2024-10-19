@@ -35,7 +35,7 @@ func sumTotalPartNumbers(
 
 }
 
-func parseTabletLine(row int, line string) (map[Position]byte, map[Position]byte) {
+func ParseTabletLine(row int, line string) (map[Position]byte, map[Position]byte) {
 	// Gets a Tablet string, returns a NumbersMap and a SymbolsMap
 
 	// Map coordinates to the char

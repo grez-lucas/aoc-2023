@@ -114,7 +114,7 @@ func TestParseTabletLine(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 
 			// Act
-			resNumbersMap, resSymbolsMap := parseTabletLine(
+			resNumbersMap, resSymbolsMap := ParseTabletLine(
 				tt.inputRow,
 				tt.inputString,
 			)

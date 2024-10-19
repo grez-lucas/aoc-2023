@@ -92,14 +92,14 @@ func TestParseTabletLine(t *testing.T) {
 		name               string
 		inputRow           int
 		inputString        string
-		expectedNumbersMap map[position]byte
-		expectedSymbolsMap map[position]byte
+		expectedNumbersMap map[Position]byte
+		expectedSymbolsMap map[Position]byte
 	}{
 		{
 			name:        "Normal inputString",
 			inputRow:    8,
 			inputString: "...45....888",
-			expectedNumbersMap: map[position]byte{
+			expectedNumbersMap: map[Position]byte{
 				{8, 3}:  byte('4'),
 				{8, 4}:  byte('5'),
 				{8, 9}:  byte('8'),
@@ -137,77 +137,77 @@ func Test_isPartNumber(t *testing.T) {
 	// Arrange
 	var tests = []struct {
 		name            string
-		inputPosition   position
-		inputSymbolsMap map[position]byte
+		inputPosition   Position
+		inputSymbolsMap map[Position]byte
 		expected        bool
 	}{
 		{
 			name:          "Symbol on top",
-			inputPosition: position{9, 3},
-			inputSymbolsMap: map[position]byte{
+			inputPosition: Position{9, 3},
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: true},
 		{
 			name:          "Symbol on bottom",
-			inputPosition: position{7, 3},
-			inputSymbolsMap: map[position]byte{
+			inputPosition: Position{7, 3},
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: true},
 		{
 			name:          "Symbol on left",
-			inputPosition: position{8, 4},
-			inputSymbolsMap: map[position]byte{
+			inputPosition: Position{8, 4},
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: true},
 		{
 			name:          "Symbol on right",
-			inputPosition: position{8, 2},
-			inputSymbolsMap: map[position]byte{
+			inputPosition: Position{8, 2},
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: true},
 		{
 			name:          "Symbol on top-left",
-			inputPosition: position{9, 4},
-			inputSymbolsMap: map[position]byte{
+			inputPosition: Position{9, 4},
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: true},
 		{
 			name:          "Symbol on top-right",
-			inputPosition: position{9, 2},
-			inputSymbolsMap: map[position]byte{
+			inputPosition: Position{9, 2},
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: true},
 		{
 			name:          "Symbol on bottom-right",
-			inputPosition: position{7, 2},
-			inputSymbolsMap: map[position]byte{
+			inputPosition: Position{7, 2},
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: true},
 		{
 			name:          "Symbol on bottom-left",
-			inputPosition: position{7, 4},
-			inputSymbolsMap: map[position]byte{
+			inputPosition: Position{7, 4},
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: true},
 		{
-			name:          "Symbol on same position",
-			inputPosition: position{8, 3},
-			inputSymbolsMap: map[position]byte{
+			name:          "Symbol on same Position",
+			inputPosition: Position{8, 3},
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: false},
 		{
-			name:          "Symbol on non-adjacent position",
-			inputPosition: position{40, 40},
-			inputSymbolsMap: map[position]byte{
+			name:          "Symbol on non-adjacent Position",
+			inputPosition: Position{40, 40},
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: false},
@@ -232,40 +232,40 @@ func Test_sumTotalPartNumbers(t *testing.T) {
 	// Arrange
 	var tests = []struct {
 		name            string
-		inputNumbersMap map[position]byte
-		inputSymbolsMap map[position]byte
+		inputNumbersMap map[Position]byte
+		inputSymbolsMap map[Position]byte
 		expected        int
 	}{
 
 		{name: "Normal case",
-			inputNumbersMap: map[position]byte{
+			inputNumbersMap: map[Position]byte{
 				{8, 2}: byte('9'),
 			},
-			inputSymbolsMap: map[position]byte{
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: 9,
 		},
 		{name: "Multiple adjacent numbers",
-			inputNumbersMap: map[position]byte{
+			inputNumbersMap: map[Position]byte{
 				{8, 2}: byte('9'),
 				{8, 4}: byte('9'),
 				{7, 2}: byte('9'),
 				{7, 4}: byte('9'),
 			},
-			inputSymbolsMap: map[position]byte{
+			inputSymbolsMap: map[Position]byte{
 				{8, 3}: byte('*'),
 			},
 			expected: 36,
 		},
 		{name: "No adjacent numbers",
-			inputNumbersMap: map[position]byte{
+			inputNumbersMap: map[Position]byte{
 				{8, 2}: byte('9'),
 				{8, 4}: byte('9'),
 				{7, 2}: byte('9'),
 				{7, 4}: byte('9'),
 			},
-			inputSymbolsMap: map[position]byte{
+			inputSymbolsMap: map[Position]byte{
 				{2, 3}: byte('*'),
 			},
 			expected: 0,

@@ -1,7 +1,6 @@
 package day3
 
 import (
-	"fmt"
 	"slices"
 )
 
@@ -48,34 +47,28 @@ func isPartNumber(
 
 	// Check if there's an adjacent key to numberPosition
 
-	// Top & Bottom
 	for _, diff := range [2]int{-1, 1} {
+
+		// Top & Bottom
 		_, ok := symbolsMap[position{numberPosition.r + diff, numberPosition.c}]
 		if ok {
 			return true
 		}
-	}
 
-	// Left & Right
-	for _, diff := range [2]int{-1, 1} {
-		_, ok := symbolsMap[position{numberPosition.r, numberPosition.c + diff}]
+		// Left & Right
+		_, ok = symbolsMap[position{numberPosition.r, numberPosition.c + diff}]
 		if ok {
 			return true
 		}
 
-	}
-
-	// Diagonals 1
-	for _, diff := range [2]int{-1, 1} {
-		_, ok := symbolsMap[position{numberPosition.r + diff, numberPosition.c + diff}]
+		// Diagonals 1
+		_, ok = symbolsMap[position{numberPosition.r + diff, numberPosition.c + diff}]
 		if ok {
 			return true
 		}
-	}
 
-	// Diagonals 2
-	for _, diff := range [2]int{-1, 1} {
-		_, ok := symbolsMap[position{numberPosition.r - diff, numberPosition.c + diff}]
+		// Diagonals 2
+		_, ok = symbolsMap[position{numberPosition.r - diff, numberPosition.c + diff}]
 		if ok {
 			return true
 		}

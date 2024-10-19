@@ -1,6 +1,7 @@
 package day3
 
 import (
+	"fmt"
 	"slices"
 )
 
@@ -35,10 +36,52 @@ func parseTabletLine(row int, line string) (map[position]byte, map[position]byte
 
 }
 
-func isPartNumber() {
+func isPartNumber(
+	numberPosition position,
+	symbolsMap map[position]byte,
+) bool {
+
 	// verifies if the number is adjacent to a symbol, even diagonally
 
-	// symbols := []string{"+", "%", "$"}
+	// Iterate through all keys of numbersMap, for each one check if theres an
+	// adjacent symbol
+
+	// Check if there's an adjacent key to numberPosition
+
+	// Top & Bottom
+	for _, diff := range [2]int{-1, 1} {
+		_, ok := symbolsMap[position{numberPosition.r + diff, numberPosition.c}]
+		if ok {
+			return true
+		}
+	}
+
+	// Left & Right
+	for _, diff := range [2]int{-1, 1} {
+		_, ok := symbolsMap[position{numberPosition.r, numberPosition.c + diff}]
+		if ok {
+			return true
+		}
+
+	}
+
+	// Diagonals 1
+	for _, diff := range [2]int{-1, 1} {
+		_, ok := symbolsMap[position{numberPosition.r + diff, numberPosition.c + diff}]
+		if ok {
+			return true
+		}
+	}
+
+	// Diagonals 2
+	for _, diff := range [2]int{-1, 1} {
+		_, ok := symbolsMap[position{numberPosition.r - diff, numberPosition.c + diff}]
+		if ok {
+			return true
+		}
+	}
+
+	return false
 }
 
 func isSymbol(character byte) bool {

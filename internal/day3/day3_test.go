@@ -132,3 +132,99 @@ func TestParseTabletLine(t *testing.T) {
 
 	}
 }
+
+func Test_isPartNumber(t *testing.T) {
+	// Arrange
+	// TODO: Write cases for horizontals, verticals both diagonals and no match
+	var tests = []struct {
+		name            string
+		inputPosition   position
+		inputSymbolsMap map[position]byte
+		expected        bool
+	}{
+		{
+			name:          "Symbol on top",
+			inputPosition: position{9, 3},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: true},
+		{
+			name:          "Symbol on bottom",
+			inputPosition: position{7, 3},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: true},
+		{
+			name:          "Symbol on left",
+			inputPosition: position{8, 4},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: true},
+		{
+			name:          "Symbol on right",
+			inputPosition: position{8, 2},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: true},
+		{
+			name:          "Symbol on top-left",
+			inputPosition: position{9, 4},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: true},
+		{
+			name:          "Symbol on top-right",
+			inputPosition: position{9, 2},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: true},
+		{
+			name:          "Symbol on bottom-right",
+			inputPosition: position{7, 2},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: true},
+		{
+			name:          "Symbol on bottom-left",
+			inputPosition: position{7, 4},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: true},
+		{
+			name:          "Symbol on same position",
+			inputPosition: position{8, 3},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: false},
+		{
+			name:          "Symbol on non-adjacent position",
+			inputPosition: position{40, 40},
+			inputSymbolsMap: map[position]byte{
+				{8, 3}: byte('*'),
+			},
+			expected: false},
+	}
+
+	for _, tt := range tests {
+
+		t.Run(tt.name, func(t *testing.T) {
+
+			// Act
+
+			result := isPartNumber(tt.inputPosition, tt.inputSymbolsMap)
+
+			if result != tt.expected {
+				t.Errorf("Incorrect result, expected `%v` got `%v`", tt.expected, result)
+			}
+		})
+	}
+}
